@@ -7,13 +7,28 @@
 </template>
 
 <script>
+ // import {urlParse} from './common/js/util'
   import MHeader from './components/m-header/m-header.vue'
   import Tab from './components/tab/tab.vue'
+  import Recommend from './components/recommend/recommend.vue'
 
   export default {
+    data () {
+      return {
+        recommend: {
+        /*  id: (() => {
+            let queryParam = urlParse()
+            return queryParam.id
+          })() */
+        }
+      }
+    },
+    created () {
+    },
     components: {
       MHeader,
-      Tab
+      Tab,
+      Recommend
     }
   }
 </script>
