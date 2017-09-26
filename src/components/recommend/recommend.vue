@@ -4,7 +4,7 @@
       <div>
         <div v-if="slider.length" class="slider-wrapper" ref="sliderWrapper">
           <slider>
-            <div v-for="(item,index) in slider">
+            <div v-for="item in slider">
               <a :href="item.linkUrl">
                 <img class="needsclick" :src="item.picUrl">
               </a>
