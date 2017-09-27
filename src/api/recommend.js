@@ -41,26 +41,3 @@ export function getDiscList() {
     return Promise.resolve(res.data)
   })
 }
-
-/* export function getDiscList() {
-  const url = '/api/getDiscList'
-  const data = Object.assign({}, commonParams, {
-    callback: 'recom11789080859262091',
-    g_tk: 821538364,
-    jsonpCallback: 'recom11789080859262091',
-    loginUin: 0,
-    hostUin: 0,
-    format: 'jsonp',
-    platform: 'yqq',
-    needNewCode: 0,
-    data: {
-      'comm': {'ct': 24},
-      'new_song': {'module': 'QQMusic.MusichallServer', 'method': 'GetNewSong', 'param': {'type': 1}}
-    }
-  })
-  return axios.get(url, {
-    params: data
-  }).then((res) => {
-    return Promise.resolve(res.data)
-  })
-} */
