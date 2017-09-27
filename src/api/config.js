@@ -1,9 +1,8 @@
 /**
  * Created by vince on 2017/9/23.
  */
-export const commomParams = {
-  g_tk: 5381,
-  format: 'json',
+export const commonParams = {
+  g_tk: 392159046,
   inCharset: 'utf-8',
   outCharset: 'utf-8',
   notice: 0

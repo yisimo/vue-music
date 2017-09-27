@@ -2,9 +2,9 @@
   <div class="recommend">
     <scroll class="recommend-content" ref="scroll" :data="discList">
       <div>
-        <div v-if="slider.length" class="slider-wrapper" ref="sliderWrapper">
+        <div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
           <slider>
-            <div v-for="item in slider">
+            <div v-for="item in recommends">
               <a :href="item.linkUrl">
                 <img class="needsclick" :src="item.picUrl">
               </a>
@@ -22,22 +22,17 @@
 </template>
 
 <script type="text/ecmascript-6">
- // import {ERR_OK} from '../../api/config' // ajax获取数据
+  import {ERR_OK} from '../../api/config'
  // import {param} from '../../common/js/param' // ajax获取数据
- // import {getRecommend} from '../../api/recommend' // jsonp抓取数据
+  import {getRecommend, getDiscList} from '../../api/recommend' // jsonp抓取数据
   import Slider from '../../base/slider/slider.vue'
   import Scroll from '../../base/scroll/scroll.vue'
-
-  const ERR_OK = 0
 
   export default {
     data () {
       return {
         recommends: [],
-        discList: [],
-        slider: [],
-        radioListd: [],
-        songList: []
+        discList: []
       }
     },
     components: {
@@ -46,23 +41,25 @@
     },
     created () {
       this._getRecommend()
+      this._getDiscList()
     },
     methods: {
       _getRecommend () {
-        // mock数据
-        this.$http.get('/api/recommend').then((response) => {
-          response = response.body
-          if (response.errno === ERR_OK) {
-            this.recommends = Object.assign({}, this.recommends, response.data)
-            this.slider = this.recommends.data.slider
+        // 通过axios抓取数据
+        getRecommend().then((res) => {
+          if (res.code === ERR_OK) {
+            this.recommends = res.data.slider
+            console.log(this.recommends)
           }
         })
-        // 通过jsonp抓取数据
-        /* getRecommend().then((res) => {
-          if (res.code === ERR_OK) {
-            console.log(res.data.slider)
-          }
-        }) */
+        // mock数据
+      /*  this.$http.get('/api/recommend').then((response) => {
+         response = response.body
+         if (response.errno === ERR_OK) {
+         this.recommends = Object.assign({}, this.recommends, response.data)
+         this.slider = this.recommends.data.slider
+         }
+         }) */
         // 通过ajax获取数据
       /*  let url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
         const data = Object.assign({}, {
@@ -86,6 +83,14 @@
         }, response => {
           console.log('未能正确获取数据')
         }) */
+      },
+      _getDiscList () {
+        getDiscList().then((res) => {
+          if (res.code === ERR_OK) {
+            this.discList = res.data
+          }
+          console.log(this.discList)
+        })
       }
     }
   }
