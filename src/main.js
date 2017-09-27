@@ -6,11 +6,15 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import fastclick from 'fastclick'
+import VueLazyLoad from 'vue-lazyload'
 
 import './common/stylus/index.styl'
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
+Vue.use(VueLazyLoad, {
+  loading: require('./common/image/default.png')
+})
 fastclick.attach(document.body)
 
 /* eslint-disable no-new */
