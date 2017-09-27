@@ -26,8 +26,8 @@
           </ul>
         </div>
       </div>
-
-      <div class="loading-container">
+      <div class="loading-container" v-show="!discList.length">
+        <loading></loading>
       </div>
     </scroll>
   </div>
@@ -39,6 +39,7 @@
   import {getRecommend, getDiscList} from '../../api/recommend' // jsonp抓取数据
   import Slider from '../../base/slider/slider.vue'
   import Scroll from '../../base/scroll/scroll.vue'
+  import Loading from '../../base/loading/loading.vue'
 
   export default {
     data () {
@@ -49,7 +50,8 @@
     },
     components: {
       Slider,
-      Scroll
+      Scroll,
+      Loading
     },
     created () {
       this._getRecommend()
@@ -156,4 +158,9 @@
               color: $color-text
             .desc
               color: $color-text-d
+      .loading-container
+        position: absolute
+        width: 100%
+        top:50%
+        transform: translateY(-50%)
 </style>
