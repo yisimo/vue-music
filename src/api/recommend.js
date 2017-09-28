@@ -9,6 +9,7 @@ import axios from 'axios'
 export function getRecommend () {
   const url = '/api/getRecommend'
   const data = Object.assign({}, commonParams, {
+    g_tk: 392159046,
     format: 'json',
     platform: 'h5',
     needNewCode: 1
@@ -24,6 +25,7 @@ export function getDiscList() {
   const url = '/api/getDiscList'
 
   const data = Object.assign({}, commonParams, {
+    g_tk: 392159046,
     rnd: Math.random(),
     hostUin: 0,
     platform: 'yqq',

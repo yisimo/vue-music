@@ -61,6 +61,22 @@ apiRoutes.get('/getDiscList', function (req, res) {
   })
 })
 
+// 通过axios利用服务端代理获取singer实时数据
+/* apiRoutes.get('/getSingerList', function (req, res) {
+  var url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
+  axios.get(url, {
+    headers: {
+      referer: 'https://y.qq.com/portal/singer_list.html',
+      host: 'y.qq.com'
+    },
+    params: req.query
+  }).then((response) => {
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e)
+  })
+}) */
+
 apiRoutes.get('/recommend', function (req, res) {
   res.json({
     errno: 0,
