@@ -1,11 +1,14 @@
 <template>
-  <div class="singer">singer</div>
+  <div class="singer">
+    <listview :data="singers"></listview>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {ERR_OK} from '../../api/config'
   import {getSingerList} from '../../api/singer'
   import Singer from '../../common/js/singer'
+  import Listview from '../../base/listview/listview.vue'
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LEN = 10
@@ -24,7 +27,6 @@
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
             this.singers = this._normalizeSinger(res.data.list)
-            console.log(this.singers)
           }
         })
       },
@@ -70,6 +72,9 @@
         })
         return hot.concat(ret)
       }
+    },
+    components: {
+      Listview
     }
   }
 </script>
