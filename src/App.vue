@@ -5,6 +5,7 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
+    <player></player>
   </div>
 </template>
 
@@ -13,6 +14,7 @@
   import MHeader from './components/m-header/m-header.vue'
   import Tab from './components/tab/tab.vue'
   import Recommend from './components/recommend/recommend.vue'
+  import Player from './components/player/player.vue'
 
   export default {
     data () {
@@ -30,7 +32,8 @@
     components: {
       MHeader,
       Tab,
-      Recommend
+      Recommend,
+      Player
     }
   }
 </script>
