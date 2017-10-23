@@ -30,14 +30,14 @@
             <div class="icon icon-left">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon icon-left">
-              <i class="icon-prev"></i>
+            <div class="icon icon-left" :class="disableCls">
+              <i @click="prev" class="icon-prev"></i>
             </div>
-            <div class="icon icon-center">
+            <div class="icon icon-center" :class="disableCls">
               <i @click="togglePlaying" :class="playIcon"></i>
             </div>
-            <div class="icon icon-right">
-              <i class="icon-next"></i>
+            <div class="icon icon-right" :class="disableCls">
+              <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon icon-right">
               <i class="icon icon-not-favorite"></i>
@@ -63,7 +63,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"></audio>
   </div>
 </template>
 
@@ -75,7 +75,15 @@
   const transform = prefixStyle('transform')
 
   export default {
+    data() {
+      return {
+        songReady: false
+      }
+    },
     computed: {
+      disableCls() {
+        return this.songReady ? '' : 'disabled'
+      },
       cdCls() {
         return this.playing ? 'play' : 'play pause'
       },
@@ -89,7 +97,8 @@
         'fullScreen',
         'currentSong',
         'playing',
-        'playlist'
+        'playlist',
+        'currentIndex'
       ])
     },
     methods: {
@@ -137,7 +146,38 @@
         this.$refs.cdWrapper.style[transform] = ''
       },
       togglePlaying() {
+        if (!this.songReady) {
+          return
+        }
         this.setPlayingState(!this.playing)
+      },
+      prev() {
+        if (!this.songReady) {
+          return
+        }
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playlist.length - 1
+        }
+        this.setCurrentIndex(index)
+        this.songReady = false
+      },
+      next() {
+        if (!this.songReady) {
+          return
+        }
+        let index = this.currentIndex + 1
+        if (index === this.playlist.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        this.songReady = false
+      },
+      ready() {
+        this.songReady = true
+      },
+      error() {
+        this.songReady = true
       },
       _getPosAndScale() {
         const targetWidth = 40
@@ -155,7 +195,8 @@
       },
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
-        setPlayingState: 'SET_PLAYING_STATE'
+        setPlayingState: 'SET_PLAYING_STATE',
+        setCurrentIndex: 'SET_CURRENT_INDEX'
       })
     },
     watch: {
@@ -271,6 +312,8 @@
           .icon
             flex: 1
             color: $color-theme
+            &.disabled
+              color: $color-theme-d
             i
               font-size: 30px
           .icon-left
