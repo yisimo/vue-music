@@ -26,6 +26,12 @@
           </div>
         </div>
         <div class="bottom">
+          <div class="progress-wrapper">
+            <span class="time time-l">{{ farmat(currentTime) }}</span>
+            <div class="progress-bar-wrapper">
+            </div>
+            <span class="time time-r">{{ farmat(currentSong.duration) }}</span>
+          </div>
           <div class="operators">
             <div class="icon icon-left">
               <i class="icon-sequence"></i>
@@ -63,7 +69,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
@@ -77,7 +83,8 @@
   export default {
     data() {
       return {
-        songReady: false
+        songReady: false,
+        currentTime: 0
       }
     },
     computed: {
@@ -160,6 +167,9 @@
           index = this.playlist.length - 1
         }
         this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
         this.songReady = false
       },
       next() {
@@ -171,6 +181,9 @@
           index = 0
         }
         this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
         this.songReady = false
       },
       ready() {
@@ -178,6 +191,23 @@
       },
       error() {
         this.songReady = true
+      },
+      updateTime(e) {
+        this.currentTime = e.target.currentTime
+      },
+      farmat(interval) {
+        interval = interval | 0
+        const minutes = interval / 60 | 0
+        const seconds = this._pad(interval % 60)
+        return `${minutes}:${seconds}`
+      },
+      _pad(num, n = 2) {
+        let len = num.toString().length
+        while (len < n) {
+          num = '0' + num
+          len++
+        }
+        return num
       },
       _getPosAndScale() {
         const targetWidth = 40
@@ -306,6 +336,24 @@
         position: absolute
         bottom: 50px
         width: 100%
+        .progress-wrapper
+          display: flex
+          align-items: center
+          margin: 0 auto
+          padding: 10px 0
+          width: 80%
+          .time
+            flex:0 0 30px
+            width: 30px
+            line-height: 30px
+            color: $color-text
+            font-size: $font-size-small
+            &.time-l
+              text-align: left
+            &.time-r
+              text-align: right
+          .progress-bar-wrapper
+            flex: 1
         .operators
           display: flex
           align-items: center
