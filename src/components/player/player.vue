@@ -29,6 +29,7 @@
           <div class="progress-wrapper">
             <span class="time time-l">{{ farmat(currentTime) }}</span>
             <div class="progress-bar-wrapper">
+              <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
             </div>
             <span class="time time-r">{{ farmat(currentSong.duration) }}</span>
           </div>
@@ -77,6 +78,7 @@
   import {mapGetters, mapMutations} from 'vuex'
   import {prefixStyle} from '../../common/js/dom'
   import animations from 'create-keyframe-animation'
+  import ProgressBar from '../../base/progress-bar/progress-bar.vue'
 
   const transform = prefixStyle('transform')
 
@@ -88,6 +90,9 @@
       }
     },
     computed: {
+      percent() {
+        return this.currentTime / this.currentSong.duration
+      },
       disableCls() {
         return this.songReady ? '' : 'disabled'
       },
@@ -201,6 +206,13 @@
         const seconds = this._pad(interval % 60)
         return `${minutes}:${seconds}`
       },
+      onProgressBarChange(percent) {
+        const currentTime = this.currentSong.duration * percent
+        this.$refs.audio.currentTime = currentTime
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+      },
       _pad(num, n = 2) {
         let len = num.toString().length
         while (len < n) {
@@ -241,6 +253,9 @@
           newPlaying ? audio.play() : audio.pause()
         })
       }
+    },
+    components: {
+      ProgressBar
     }
   }
 </script>
