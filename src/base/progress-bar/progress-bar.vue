@@ -63,7 +63,7 @@
     },
     watch: {
       percent(newpercent) {
-        if (newpercent >= 0) {
+        if (newpercent >= 0 && !this.touch.initiated) {
           const barWidth = this.$refs.progressBar.clientWidth - progressBarWidth
           const offsetWidth = newpercent * barWidth
           this._offset(offsetWidth)
