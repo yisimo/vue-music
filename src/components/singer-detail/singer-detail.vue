@@ -25,7 +25,8 @@
         return this.singer.avatar
       },
       ...mapGetters([
-        'singer'
+        'singer',
+        'sequenceList'
       ])
     },
     created() {
