@@ -89,6 +89,7 @@
   import animations from 'create-keyframe-animation'
   import ProgressBar from '../../base/progress-bar/progress-bar.vue'
   import ProgressCircle from '../../base/progress-circle/progress-circle.vue'
+  import Lyric from 'lyric-parser'
 
   const transform = prefixStyle('transform')
 
@@ -97,7 +98,8 @@
       return {
         songReady: false,
         currentTime: 0,
-        radius: 32
+        radius: 32,
+        currentLyric: null
       }
     },
     computed: {
@@ -258,6 +260,12 @@
         })
         this.setCurrentIndex(index)
       },
+      getLyric() {
+        this.currentSong.getLyric().then((lyric) => {
+          this.currentLyric = new Lyric(lyric)
+          console.log(this.currentLyric)
+        })
+      },
       _pad(num, n = 2) {
         let len = num.toString().length
         while (len < n) {
@@ -301,6 +309,7 @@
         const audio = this.$refs.audio
         this.$nextTick(() => {
           newPlaying ? audio.play() : audio.pause()
+          this.getLyric()
         })
       }
     },
