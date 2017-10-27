@@ -17,13 +17,23 @@
           <h2 class="subtitle" v-html="currentSong.singer"></h2>
         </div>
         <div class="middle">
-          <div class="middle-l">
+        <!--  <div class="middle-l">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdCls">
                 <img class="image" :src="currentSong.image" alt="">
               </div>
             </div>
-          </div>
+          </div> -->
+          <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
+            <div class="lyric-wrapper">
+              <div v-if="currentLyric">
+                <p ref="lyricLine"
+                  class="text"
+                  :class="{'current': currentLineNum === index}"
+                  v-for="(line, index) in currentLyric.lines">{{ line.txt }}</p>
+              </div>
+            </div>
+          </scroll>
         </div>
         <div class="bottom">
           <div class="progress-wrapper">
@@ -90,6 +100,7 @@
   import ProgressBar from '../../base/progress-bar/progress-bar.vue'
   import ProgressCircle from '../../base/progress-circle/progress-circle.vue'
   import Lyric from 'lyric-parser'
+  import Scroll from '../../base/scroll/scroll.vue'
 
   const transform = prefixStyle('transform')
 
@@ -99,7 +110,8 @@
         songReady: false,
         currentTime: 0,
         radius: 32,
-        currentLyric: null
+        currentLyric: null,
+        currentLineNum: 0
       }
     },
     computed: {
@@ -262,9 +274,20 @@
       },
       getLyric() {
         this.currentSong.getLyric().then((lyric) => {
-          this.currentLyric = new Lyric(lyric)
-          console.log(this.currentLyric)
+          this.currentLyric = new Lyric(lyric, this.handleLyric)
+          if (this.playing) {
+            this.currentLyric.play()
+          }
         })
+      },
+      handleLyric({lineNum, txt}) {
+        this.currentLineNum = lineNum
+        if (lineNum > 5) {
+          let lineEl = this.$refs.lyricLine[lineNum - 5]
+          this.$refs.lyricList.scrollToElement(lineEl, 1000)
+        } else {
+          this.$refs.lyricList.scrollTo(0, 0, 1000)
+        }
       },
       _pad(num, n = 2) {
         let len = num.toString().length
@@ -315,7 +338,8 @@
     },
     components: {
       ProgressBar,
-      ProgressCircle
+      ProgressCircle,
+      Scroll
     }
   }
 </script>
@@ -407,6 +431,23 @@
                 box-sizing: border-box
                 border: 10px solid rgba(255, 255, 255, 0.1)
                 border-radius: 50%
+        .middle-r
+          display: inline-block
+          vertical-align: top
+          height: 100%
+          width: 100%
+          overflow: hidden
+          .lyric-wrapper
+            width: 80%
+            margin 0 auto
+            overflow: hidden
+            text-align: center
+            .text
+              line-height 32px
+              font-size $font-size-medium
+              color: $color-text-l
+              &.current
+                color: $color-text
       .bottom
         position: absolute
         bottom: 50px
