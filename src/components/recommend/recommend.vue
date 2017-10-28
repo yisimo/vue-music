@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <scroll class="recommend-content" ref="scroll" :data="discList">
       <div>
         <div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
@@ -40,8 +40,10 @@
   import Slider from '../../base/slider/slider.vue'
   import Scroll from '../../base/scroll/scroll.vue'
   import Loading from '../../base/loading/loading.vue'
+  import {playlistMixin} from '../../common/js/mixin'
 
   export default {
+    mixins: [playlistMixin],
     data () {
       return {
         recommends: [],
@@ -58,6 +60,11 @@
       this._getDiscList()
     },
     methods: {
+      handlePlaylist(playlist) {
+        const bottom = playlist.length > 0 ? '60px' : ''
+        this.$refs.recommend.style.bottom = bottom
+        this.$refs.scroll.refresh()
+      },
       _getRecommend () {
         // 通过axios抓取数据
         getRecommend().then((res) => {
