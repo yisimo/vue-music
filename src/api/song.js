@@ -11,7 +11,7 @@ export function getLyric (mid) {
     songmid: mid,
     g_tk: 1682844624,
     hostUin: 0,
-    format: 'jsonp',
+    format: 'json',
     platform: 'yqq',
     needNewCode: 0,
     categoryId: 10000000

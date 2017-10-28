@@ -47,11 +47,11 @@
             <span class="dot" :class="{'active': currentShow === 'lyric'}"></span>
           </div>
           <div class="progress-wrapper">
-            <span class="time time-l">{{ farmat(currentTime) }}</span>
+            <span class="time time-l">{{ format(currentTime) }}</span>
             <div class="progress-bar-wrapper">
               <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
             </div>
-            <span class="time time-r">{{ farmat(currentSong.duration) }}</span>
+            <span class="time time-r">{{ format(currentSong.duration) }}</span>
           </div>
           <div class="operators">
             <div class="icon icon-left" @click="changeMode">
@@ -277,7 +277,6 @@
             index = this.playlist.length - 1
           }
           this.setCurrentIndex(index)
-          this.getLyric()
           if (!this.playing) {
             this.togglePlaying()
           }
@@ -297,7 +296,6 @@
             index = 0
           }
           this.setCurrentIndex(index)
-          this.getLyric()
           if (!this.playing) {
             this.togglePlaying()
           }
@@ -328,7 +326,7 @@
       updateTime(e) {
         this.currentTime = e.target.currentTime
       },
-      farmat(interval) {
+      format(interval) {
         interval = interval | 0
         const minutes = interval / 60 | 0
         const seconds = this._pad(interval % 60)
@@ -420,6 +418,9 @@
     },
     watch: {
       currentSong(newSong, oldSong) {
+        if (!newSong.id) {
+          return
+        }
         if (newSong.id === oldSong.id) {
           return
         }
@@ -429,15 +430,16 @@
           this.playingLyric = ''
           this.currentLineNum = 0
         }
-        setTimeout(() => {
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
           this.$refs.audio.play()
+          this.getLyric()
         }, 1000)
       },
       playing(newPlaying) {
         const audio = this.$refs.audio
         this.$nextTick(() => {
           newPlaying ? audio.play() : audio.pause()
-          this.getLyric()
         })
       }
     },
