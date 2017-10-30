@@ -14,7 +14,7 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单介绍</h1>
           <ul>
-            <li v-for="item in discList" class="item">
+            <li @click="selectItem(item)" v-for="item in discList" class="item">
               <div class="icon">
                 <img width="60" height="60" v-lazy="item.imgurl">
               </div>
@@ -30,6 +30,7 @@
         <loading></loading>
       </div>
     </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -41,6 +42,7 @@
   import Scroll from '../../base/scroll/scroll.vue'
   import Loading from '../../base/loading/loading.vue'
   import {playlistMixin} from '../../common/js/mixin'
+  import {mapMutations} from 'vuex'
 
   export default {
     mixins: [playlistMixin],
@@ -64,6 +66,12 @@
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.recommend.style.bottom = bottom
         this.$refs.scroll.refresh()
+      },
+      selectItem(item) {
+        this.$router.push({
+          path: `/recommend/${item.dissid}`
+        })
+        this.setDisc(item)
       },
       _getRecommend () {
         // 通过axios抓取数据
@@ -116,7 +124,10 @@
           this.checkloaded = true
           this.$refs.scroll.refresh()
         }
-      }
+      },
+      ...mapMutations({
+        setDisc: 'SET_DISC'
+      })
     }
   }
 </script>
