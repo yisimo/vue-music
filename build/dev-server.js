@@ -46,11 +46,11 @@ apiRoutes.get('/getRecommend', function (req, res) {
   })
 })
 
-apiRoutes.get('/getSongList', function (req, res) {
+/* apiRoutes.get('/getSongList', function (req, res) {
   var url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
   axios.get(url, {
     headers: {
-      referer: 'https://y.qq.com/n/yqq/playlist',
+      referer: 'https://y.qq.com/n/yqq/playlist/2686920152.html',
       host: 'y.qq.com'
     },
     params: res.query
@@ -67,7 +67,7 @@ apiRoutes.get('/getSongList', function (req, res) {
   }).catch((e) => {
     console.log(e)
   })
-})
+}) */
 
 apiRoutes.get('/getDiscList', function (req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
