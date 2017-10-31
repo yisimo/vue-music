@@ -122,7 +122,6 @@ apiRoutes.get('/lyric', function (req, res) {
     console.log(e)
   })
 }) */
-
 apiRoutes.get('/recommend', function (req, res) {
   res.json({
     errno: 0,
