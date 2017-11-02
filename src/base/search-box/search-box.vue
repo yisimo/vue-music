@@ -20,6 +20,9 @@
       }
     },
     methods: {
+      setQuery(query) {
+        this.query = query
+      },
       clear() {
         this.query = ''
       }
