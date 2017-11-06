@@ -6,7 +6,7 @@
     :pullup="pullup"
     :data="result">
     <ul class="suggest-list">
-      <li class="suggest-item" v-for="item in result">
+      <li @click="selectItem(item)" class="suggest-item" v-for="item in result">
         <div class="icon">
           <i :class="getIconCls(item)"></i>
         </div>
@@ -25,6 +25,8 @@
   import {createSong} from '../../common/js/song'
   import Scroll from '../../base/scroll/scroll.vue'
   import Loading from '../../base/loading/loading'
+  import Singer from '../../common/js/singer'
+  import {mapMutations, mapActions} from 'vuex'
 
   const TYPE_SINGER = 'singer'
   const perpage = 20
@@ -90,6 +92,20 @@
           return 'icon-music'
         }
       },
+      selectItem(item) {
+        if (item.type === TYPE_SINGER) {
+          const singer = new Singer({
+            id: item.singermid,
+            name: item.singername
+          })
+          this.$router.push({
+            path: `/search/${singer.id}`
+          })
+          this.setSinger(singer)
+        } else {
+          this.insertSong(item)
+        }
+      },
       _checkMore(data) {
         const song = data.song
         if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
@@ -114,7 +130,13 @@
           ret = ret.concat(this._normalizeSongs(data.song.list))
         }
         return ret
-      }
+      },
+      ...mapMutations({
+        setSinger: 'SET_SINGER'
+      }),
+      ...mapActions([
+        'insertSong'
+      ])
     },
     watch: {
       query(newQuery) {
