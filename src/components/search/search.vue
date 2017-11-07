@@ -15,11 +15,11 @@
           <div class="search-history" v-show="searchHistory.length">
             <h1 class="title">
               <span class="text">搜索历史</span>
-              <span class="clear">
+              <span class="clear" @click="showConfirm">
               <i class="icon-clear"></i>
             </span>
             </h1>
-            <search-list :searches="searchHistory"></search-list>
+            <search-list @select="addQuery" @delete="deleteSearchHistory" :searches="searchHistory"></search-list>
           </div>
         </div>
       </scroll>
@@ -27,6 +27,7 @@
     <div ref="suggestResult" class="suggest-result" v-show="query">
       <suggest ref="suggest" @select="saveSearch" @listScroll="blurInput" :query="query"></suggest>
     </div>
+    <confirm ref="confirm" @confirm="clearSearchHistory" text="是否清空搜索历史结果" confirmBtnText="清空"></confirm>
     <router-view></router-view>
   </div>
 </template>
@@ -39,6 +40,7 @@
   import SearchList from '../../base/search-list/search-list.vue'
   import {playlistMixin} from '../../common/js/mixin'
   import Scroll from '../../base/scroll/scroll.vue'
+  import Confirm from '../../base/confirm/confirm.vue'
   import {mapActions, mapGetters} from 'vuex'
 
   export default {
@@ -53,7 +55,8 @@
       SearchBox,
       Suggest,
       SearchList,
-      Scroll
+      Scroll,
+      Confirm
     },
     created() {
       this._getHotKey()
@@ -86,6 +89,9 @@
       saveSearch() {
         this.saveSearchHistory(this.query)
       },
+      showConfirm() {
+        this.$refs.confirm.show()
+      },
       _getHotKey() {
         getHotKey().then((res) => {
           if (res.code === ERR_OK) {
@@ -94,7 +100,9 @@
         })
       },
       ...mapActions([
-        'saveSearchHistory'
+        'saveSearchHistory',
+        'deleteSearchHistory',
+        'clearSearchHistory'
       ])
     },
     watch: {
