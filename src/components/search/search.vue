@@ -38,17 +38,16 @@
   import {ERR_OK} from '../../api/config'
   import Suggest from '../suggest/suggest.vue'
   import SearchList from '../../base/search-list/search-list.vue'
-  import {playlistMixin} from '../../common/js/mixin'
+  import {playlistMixin, searchMixin} from '../../common/js/mixin'
   import Scroll from '../../base/scroll/scroll.vue'
   import Confirm from '../../base/confirm/confirm.vue'
   import {mapActions, mapGetters} from 'vuex'
 
   export default {
-    mixins: [playlistMixin],
+    mixins: [playlistMixin, searchMixin],
     data() {
       return {
-        hotKey: [],
-        query: ''
+        hotKey: []
       }
     },
     components: {
@@ -63,7 +62,6 @@
     },
     computed: {
       ...mapGetters([
-        'searchHistory',
         'playlist',
         'sequenceList',
         'currentSong'
@@ -80,18 +78,6 @@
         this.$refs.suggestResult.style.bottom = bottom
         this.$refs.suggest.refresh()
       },
-      addQuery(query) {
-        this.$refs.searchBox.setQuery(query)
-      },
-      onQueryChange(query) {
-        this.query = query
-      },
-      blurInput() {
-        this.$refs.searchBox.blur()
-      },
-      saveSearch() {
-        this.saveSearchHistory(this.query)
-      },
       showConfirm() {
         this.$refs.confirm.show()
       },
@@ -103,8 +89,6 @@
         })
       },
       ...mapActions([
-        'saveSearchHistory',
-        'deleteSearchHistory',
         'clearSearchHistory'
       ])
     },
