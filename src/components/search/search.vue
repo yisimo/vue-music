@@ -63,7 +63,10 @@
     },
     computed: {
       ...mapGetters([
-        'searchHistory'
+        'searchHistory',
+        'playlist',
+        'sequenceList',
+        'currentSong'
       ]),
       shortcut() {
         return this.hotKey.concat(this.searchHistory)

@@ -4,26 +4,26 @@
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
-            <i class="icon"></i>
-            <span class="text"></span>
-            <span class="clear">
+            <i class="icon" :class="iconMode" @click.stop="changeMode"></i>
+            <span class="text">{{ modeText }}</span>
+            <span class="clear" @click="showConfirm">
               <i class="icon-clear"></i>
             </span>
           </h1>
         </div>
         <scroll ref="listContent" class="list-content" :data="sequenceList">
-          <ul class="list">
-            <li ref="listItem" class="item" v-for="(item,index) in sequenceList" @click="selectItem(item,index)">
+          <transition-group name="list" tag="ul">
+            <li :key="item.id" ref="listItem" class="item" v-for="(item,index) in sequenceList" @click="selectItem(item,index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{ item.name }}</span>
               <span class="like">
                 <i class="icon-not-favorite"></i>
               </span>
-              <span class="delete" @click="deleteOne(item)">
+              <span class="delete" @click.stop="deleteOne(item)">
                 <i class="icon-delete"></i>
               </span>
             </li>
-          </ul>
+          </transition-group>
         </scroll>
         <div class="list-operate">
           <div class="add">
@@ -35,38 +35,44 @@
           <span>关闭</span>
         </div>
       </div>
+      <confirm @confirm="confirmClear" ref="confirm" text="是否清空播放列表" confirmBtnText="清空"></confirm>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapGetters, mapMutations, mapActions} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
   import Scroll from '../../base/scroll/scroll.vue'
+  import Confirm from '../../base/confirm/confirm.vue'
   import {playMode} from '../../common/js/config'
+  import {playerMixin} from '../../common/js/mixin'
 
   export default {
+    mixins: [playerMixin],
     data() {
       return {
         showFlag: false
       }
     },
     computed: {
+      modeText() {
+        return this.mode === playMode.sequence ? '顺序播放' : this.mode === playMode.random ? '随机播放' : '单曲循环'
+      },
       ...mapGetters([
-        'sequenceList',
         'currentSong',
-        'playlist',
         'mode'
       ])
     },
     components: {
-      Scroll
+      Scroll,
+      Confirm
     },
     methods: {
       show() {
         this.showFlag = true
         setTimeout(() => {
           this.$refs.listContent.refresh()
-          this.scrollCurrent(this.currentSong)
+          this.scrollToCurrent(this.currentSong)
         }, 20)
       },
       hide() {
@@ -88,7 +94,7 @@
         this.setCurrentIndex(index)
         this.setPlayingState(true)
       },
-      scrollCurrent(current) {
+      scrollToCurrent(current) {
         const index = this.sequenceList.findIndex((song) => {
           return current.id === song.id
         })
@@ -100,12 +106,16 @@
           this.show()
         }
       },
-      ...mapMutations({
-        setCurrentIndex: 'SET_CURRENT_INDEX',
-        setPlayingState: 'SET_PLAYING_STATE'
-      }),
+      showConfirm() {
+        this.$refs.confirm.show()
+      },
+      confirmClear() {
+        this.deleteSongList()
+        this.hide()
+      },
       ...mapActions([
-        'deleteSong'
+        'deleteSong',
+        'deleteSongList'
       ])
     },
     watch: {
@@ -114,7 +124,7 @@
           return
         }
         setTimeout(() => {
-          this.scrollCurrent(newSong)
+          this.scrollToCurrent(newSong)
         }, 20)
       }
     }
@@ -141,6 +151,7 @@
       opacity: 0
       .list-wrapper
         transform: translate3d(0, 100%, 0)
+    &.list-fade-enter
     .list-wrapper
       position: absolute
       left: 0
@@ -176,7 +187,7 @@
           padding: 0 30px 0 20px
           overflow: hidden
           &.list-enter-active, &.list-leave-active
-            transition: all 0.1s
+            transition: all 0.1s linear
           &.list-enter, &.list-leave-to
             height: 0
           .current
