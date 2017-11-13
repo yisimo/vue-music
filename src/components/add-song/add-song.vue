@@ -8,14 +8,32 @@
         </div>
       </div>
       <div class="search-box-wrapper">
-        <search-box @query="onQueryChange" placeholder="搜索歌曲"></search-box>
+        <search-box ref="searchBox" @query="onQueryChange" placeholder="搜索歌曲"></search-box>
       </div>
       <div class="shortcut" v-show="!query">
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
+        <div class="list-wrapper">
+          <scroll ref="songList" v-if="currentIndex === 0" :data="playHistory" class="scroll-list">
+            <div class="list-inner">
+              <song-list :songs="playHistory" @select="selectSong"></song-list>
+            </div>
+          </scroll>
+          <scroll ref="searchList" v-if="currentIndex === 1" :data="searchHistory" class="scroll-list">
+            <div class="list-inner">
+              <search-list :searches="searchHistory" @select="addQuery" @delete="deleteSearchHistory"></search-list>
+            </div>
+          </scroll>
+        </div>
       </div>
       <div class="search-result" v-show="query">
-        <suggest :query="query" :showSinger="showSinger" @select="selectSuggest"></suggest>
+        <suggest :query="query" :showSinger="showSinger" @select="selectSuggest" @listScroll="blurInput"></suggest>
       </div>
+      <top-tip ref="topTip">
+        <div class="tip-title">
+          <i class="icon-ok"></i>
+          <span class="text">1首歌曲已添加到播放列表</span>
+        </div>
+      </top-tip>
     </div>
   </transition>
 </template>
@@ -23,8 +41,14 @@
 <script type="text/ecmascript-6">
   import SearchBox from '../../base/search-box/search-box.vue'
   import Switches from '../../base/switches/switches.vue'
+  import Scroll from '../../base/scroll/scroll.vue'
+  import SongList from '../../base/song-list/song-list.vue'
+  import SearchList from '../../base/search-list/search-list.vue'
+  import TopTip from '../../base/top-tip/top-tip.vue'
   import Suggest from '../../components/suggest/suggest.vue'
   import {searchMixin} from '../../common/js/mixin'
+  import Song from '../../common/js/song'
+  import {mapGetters, mapActions} from 'vuex'
 
   export default {
     mixins: [searchMixin],
@@ -46,21 +70,47 @@
     components: {
       SearchBox,
       Suggest,
-      Switches
+      Switches,
+      Scroll,
+      SongList,
+      SearchList,
+      TopTip
+    },
+    computed: {
+      ...mapGetters([
+        'playHistory'
+      ])
     },
     methods: {
       show() {
         this.showFlag = true
+        setTimeout(() => {
+          if (this.currentIndex === 0) {
+            this.$refs.songList.refresh()
+          } else {
+            this.$refs.searchList.refresh()
+          }
+        }, 20)
       },
       hide() {
         this.showFlag = false
       },
       selectSuggest() {
         this.saveSearch()
+        this.$refs.topTip.show()
       },
       switchItem(index) {
         this.currentIndex = index
-      }
+      },
+      selectSong(song, index) {
+        if (index !== 0) {
+          this.insertSong(new Song(song))
+          this.$refs.topTip.show()
+        }
+      },
+      ...mapActions([
+        'insertSong'
+      ])
     }
   }
 </script>
@@ -98,9 +148,31 @@
           color: $color-theme
     .search-box-wrapper
       margin: 20px
+    .shortcut
+      .list-wrapper
+        position: absolute
+        top: 165px
+        bottom: 0
+        width: 100%
+        .scroll-list
+          height: 100%
+          overflow: hidden
+          .list-inner
+            padding: 20px 30px
     .search-result
       position fixed
       top: 124px
       bottom: 0
       width: 100%
+    .tip-title
+      text-align: center
+      padding: 18px 0
+      font-size: 0
+      .icon-ok
+        margin-right 4px
+        font-size: $font-size-medium
+        color: $color-theme
+      .text
+        font-size: $font-size-medium
+        color: $color-text
 </style>

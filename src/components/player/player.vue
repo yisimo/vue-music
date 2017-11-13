@@ -103,7 +103,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapMutations, mapActions} from 'vuex'
   import { prefixStyle } from '../../common/js/dom'
   import { playMode } from '../../common/js/config'
   import animations from 'create-keyframe-animation'
@@ -304,6 +304,7 @@
       },
       ready() {
         this.songReady = true
+        this.savePlayHistory(this.currentSong)
       },
       error() {
         this.songReady = true
@@ -389,7 +390,13 @@
           y,
           scale
         }
-      }
+      },
+      ...mapMutations({
+        setFullScreen: 'SET_FULL_SCREEN'
+      }),
+      ...mapActions([
+        'savePlayHistory'
+      ])
     },
     watch: {
       currentSong(newSong, oldSong) {
