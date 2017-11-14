@@ -12,6 +12,11 @@
         <span class="text">随机播放全部</span>
       </div>
       <div class="list-wrapper">
+        <scroll :data="favoriteList" v-if="currentIndex === 0" class="list-scroll">
+          <div class="list-inner">
+            <song-list :songs="favoriteList" @select="selectSong"></song-list>
+          </div>
+        </scroll>
         <scroll :data="playHistory" v-if="currentIndex === 1" class="list-scroll">
           <div class="list-inner">
             <song-list :songs="playHistory" @select="selectSong"></song-list>
@@ -47,7 +52,8 @@
     },
     computed: {
       ...mapGetters([
-        'playHistory'
+        'playHistory',
+        'favoriteList'
       ])
     },
     methods: {
@@ -57,10 +63,8 @@
       switchItem(index) {
         this.currentIndex = index
       },
-      selectSong(song, index) {
-        if (index !== 0) {
-          this.insertSong(new Song(song))
-        }
+      selectSong(song) {
+        this.insertSong(new Song(song))
       },
       ...mapActions([
         'insertSong'
@@ -85,7 +89,7 @@
       transform: translate3d(100%, 0, 0)
     .back
       position: absolute
-      top: 0
+      top: 5px
       left: 6px
       z-index: 50
       .icon-back
