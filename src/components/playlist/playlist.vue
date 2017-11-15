@@ -206,7 +206,7 @@
             flex: 1
             no-wrap()
             font-size: $font-size-medium
-            color: $color-text-d
+            color: $color-text-ll
           .like
             extend-click()
             margin-right: 15px

@@ -203,7 +203,7 @@
       padding: 20px 0
       border-radius: 10px
       text-align: center
-      background: $color-background-d
+      background: $color-highlight-background
       font-family: Helvetica
       .item
         padding: 3px

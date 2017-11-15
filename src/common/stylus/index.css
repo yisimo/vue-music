@@ -133,8 +133,8 @@ html {
   font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  background: #222;
-  color: #fff;
+  background: #fff;
+  color: #000;
 }
 @font-face {
   font-family: 'music-icon';

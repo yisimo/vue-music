@@ -45,6 +45,7 @@ export function getDiscList() {
   const url = '/api/getSongList'
   const data = Object.assign({}, commonParams, {
     disstid,
+    g_tk: 1864104688,
     type: 1,
     json: 1,
     utf8: 1,
@@ -59,28 +60,13 @@ export function getDiscList() {
     return Promise.resolve(res.data)
   })
 } */
-/* export function getSongList(disstid) {
-  const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
-  const data = Object.assign({}, commonParams, {
-    disstid,
-    type: 1,
-    json: 1,
-    utf8: 1,
-    onlysong: 0,
-    platform: 'yqq',
-    hostUin: 0,
-    needNewCode: 0,
-    format: 'jsonp',
-    g_tk: 1564879142
-  })
-  return jsonp(url, data, options)
-} */
 
-export function getSongList(disstid) {
+export function getSongList (disstid) {
   const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
 
   const data = Object.assign({}, commonParams, {
     disstid,
+    g_tk: 1364888092,
     type: 1,
     json: 1,
     utf8: 1,

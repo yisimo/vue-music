@@ -53,7 +53,7 @@
     background: $color-highlight-background
     .icon-search
       font-size: 24px
-      color: $color-background
+      color: $color-theme
     .box
       flex: 1
       margin: 0 5px
@@ -66,5 +66,5 @@
         color: $color-text-d
     .icon-dismiss
       font-size: 16px
-      color: $color-background
+      color: $color-theme
 </style>

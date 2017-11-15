@@ -477,12 +477,12 @@
           line-height: 40px
           text-align: center
           font-size: $font-size-large
-          color: $color-text
+          color: $color-text-w
         .subtitle
           line-height: 20px
           text-align: center
           font-size $font-size-medium
-          color: $color-text
+          color: $color-text-w
       .middle
         position: fixed
         top: 80px
@@ -531,7 +531,7 @@
               height: 20px
               line-height: 20px
               font-size: $font-size-medium
-              color: $color-text-l
+              color: $color-text-w
         .middle-r
           display: inline-block
           vertical-align: top
@@ -546,9 +546,9 @@
             .text
               line-height 32px
               font-size $font-size-medium
-              color: $color-text-l
+              color: $color-text-w
               &.current
-                color: $color-text
+                color: $color-theme
       .bottom
         position: absolute
         bottom: 50px
@@ -563,11 +563,11 @@
             width: 8px
             height: 8px
             border-radius: 50%
-            background: $color-text-l
+            background: $color-text-w-l
             &.active
               width: 20px
               border-radius: 5px
-              background: $color-text-ll
+              background: $color-text-w
         .progress-wrapper
           display: flex
           align-items: center
@@ -578,7 +578,7 @@
             flex: 0 0 30px
             width: 30px
             line-height: 30px
-            color: $color-text
+            color: $color-text-w-l
             font-size: $font-size-small
             &.time-l
               text-align: left

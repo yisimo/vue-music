@@ -34,15 +34,16 @@
     align-items: center
     margin: 0 auto
     width: 240px
-    border: 1px solid $color-highlight-background
+    border: 1px solid $color-theme
     border-radius: 5px
     .switch-item
       flex: 1
       padding: 8px
       text-align: center
       font-size: $font-size-medium
-      color: $color-text-d
+      background: $color-theme
+      color: $color-text-w
       &.active
-        background: $color-highlight-background
-        color: $color-text
+        background: $color-background
+        color: $color-theme
 </style>

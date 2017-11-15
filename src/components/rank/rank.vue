@@ -9,7 +9,8 @@
           <ul class="songlist">
             <li class="song" v-for="(song, index) in item.songList">
               <span>{{ index + 1 }}</span>
-              <span>{{ song.songname}}-{{song.singername }}</span>
+              <span class="song-name">{{ song.songname}}</span>
+              <span>-{{song.singername }}</span>
             </li>
           </ul>
         </li>
@@ -79,6 +80,7 @@
     top: 88px
     bottom: 0
     width: 100%
+    background: $color-highlight-background
     .toplist
       height: 100%
       overflow: hidden
@@ -101,12 +103,14 @@
           padding: 0 20px
           height: 100px
           overflow: hidden
-          background: $color-highlight-background
+          background: $color-background
           color: $color-text-d
           font-size: $font-size-small
           .song
             no-wrap()
             line-height: 26px
+            .song-name
+              color: $color-text
       .loading-container
         position: absolute
         width: 100%

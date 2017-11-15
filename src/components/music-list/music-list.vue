@@ -18,7 +18,7 @@
       <div class="song-list-wrapper">
         <song-list :rank="rank" :songs="songs" @select="selectItem"></song-list>
       </div>
-      <div class="loading-container" v-show="!songs.length">
+      <div class="loading-container" v-show="!songs.length" ref="loading">
         <loading></loading>
       </div>
     </scroll>
@@ -172,7 +172,7 @@
       text-align: center
       line-height: 40px
       font-size: $font-size-large
-      color: $color-text
+      color: $color-text-w
     .bg-image
       position: relative
       width: 100%

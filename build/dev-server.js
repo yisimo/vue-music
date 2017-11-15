@@ -23,11 +23,11 @@ var proxyTable = config.dev.proxyTable
 
 var app = express()
 
-var appData = require('../data.json')
+/* var appData = require('../data.json')
 var recommend = appData.recommend
 var rank = appData.rank
 var search = appData.search
-var singer = appData.singer
+var singer = appData.singer */
 
 var apiRoutes = express.Router()
 
@@ -46,18 +46,20 @@ apiRoutes.get('/getRecommend', function (req, res) {
   })
 })
 
-/* apiRoutes.get('/getSongList', function (req, res) {
+// 获取推荐歌曲列表
+/*  apiRoutes.get('/getSongList', function (req, res) {
   var url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
   axios.get(url, {
     headers: {
-      referer: 'https://y.qq.com/n/yqq/playlist/2686920152.html',
+      referer: 'https://y.qq.com/',
       host: 'y.qq.com'
     },
     params: res.query
   }).then((response) => {
     var ret = response.data
+    console.log(ret)
     if (typeof ret === 'string') {
-      var reg = /^\w+\(({[^()]+})\)$/
+      var reg = /({.*})\)$/
       var matches = ret.match(reg)
       if (matches) {
         ret = JSON.parse(matches[1])
@@ -68,6 +70,22 @@ apiRoutes.get('/getRecommend', function (req, res) {
     console.log(e)
   })
 }) */
+
+// 获取推荐歌曲列表
+/* var request = require("request")
+
+ var options = {
+   method: 'GET',
+   url: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+   qs: { type: '1', disstid: 'disstid', outCharset: 'utf-8' },
+   headers:{ referer: 'https://y.qq.com/'}
+ }
+
+ request(options, function (error, response, body) {
+   if (error) throw new Error(error)
+   var ret = JSON.parse(body.match(/({.*})\)$/)[1])
+   return ret.cdlist[0].songlist
+ })*/
 
 apiRoutes.get('/getDiscList', function (req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
@@ -107,21 +125,6 @@ apiRoutes.get('/lyric', function (req, res) {
   })
 })
 
-// 通过axios利用服务端代理获取singer实时数据
-/* apiRoutes.get('/getSingerList', function (req, res) {
-  var url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
-  axios.get(url, {
-    headers: {
-      referer: 'https://y.qq.com/portal/singer_list.html',
-      host: 'y.qq.com'
-    },
-    params: req.query
-  }).then((response) => {
-    res.json(response.data)
-  }).catch((e) => {
-    console.log(e)
-  })
-}) */
 apiRoutes.get('/recommend', function (req, res) {
   res.json({
     errno: 0,
