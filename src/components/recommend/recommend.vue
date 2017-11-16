@@ -80,37 +80,6 @@
             this.recommends = res.data.slider
           }
         })
-        // mock数据
-      /*  this.$http.get('/api/recommend').then((response) => {
-         response = response.body
-         if (response.errno === ERR_OK) {
-         this.recommends = Object.assign({}, this.recommends, response.data)
-         this.slider = this.recommends.data.slider
-         }
-         }) */
-        // 通过ajax获取数据
-      /*  let url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-        const data = Object.assign({}, {
-          g_tk: 5381,
-          uin: 0,
-          format: 'json',
-          inCharset: 'utf-8',
-          outCharset: 'utf-8',
-          notice: 0,
-          platform: 'h5',
-          needNewCode: 1
-        // _: 1506138139421
-        })
-        let newData = param(data)
-        url += (url.indexOf('?') < 0 ? '?' : '&') + newData
-        this.$http.get(url).then((response) => {
-          if (response === ERR_OK) {
-            response = response.body
-            console.log(response.data.slider)
-          }
-        }, response => {
-          console.log('未能正确获取数据')
-        }) */
       },
       _getDiscList () {
         getDiscList().then((res) => {

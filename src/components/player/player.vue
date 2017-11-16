@@ -95,7 +95,7 @@
     <playlist ref="playlist"></playlist>
     <audio ref="audio"
            :src="currentSong.url"
-           @canplay="ready"
+           @play="ready"
            @error="error"
            @ended="end"
            @timeupdate="updateTime"></audio>

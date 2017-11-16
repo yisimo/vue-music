@@ -23,12 +23,6 @@ var proxyTable = config.dev.proxyTable
 
 var app = express()
 
-/* var appData = require('../data.json')
-var recommend = appData.recommend
-var rank = appData.rank
-var search = appData.search
-var singer = appData.singer */
-
 var apiRoutes = express.Router()
 
 apiRoutes.get('/getRecommend', function (req, res) {
@@ -45,47 +39,6 @@ apiRoutes.get('/getRecommend', function (req, res) {
     console.log(e)
   })
 })
-
-// 获取推荐歌曲列表
-/*  apiRoutes.get('/getSongList', function (req, res) {
-  var url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
-  axios.get(url, {
-    headers: {
-      referer: 'https://y.qq.com/',
-      host: 'y.qq.com'
-    },
-    params: res.query
-  }).then((response) => {
-    var ret = response.data
-    console.log(ret)
-    if (typeof ret === 'string') {
-      var reg = /({.*})\)$/
-      var matches = ret.match(reg)
-      if (matches) {
-        ret = JSON.parse(matches[1])
-      }
-    }
-    res.json(ret)
-  }).catch((e) => {
-    console.log(e)
-  })
-}) */
-
-// 获取推荐歌曲列表
-/* var request = require("request")
-
- var options = {
-   method: 'GET',
-   url: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
-   qs: { type: '1', disstid: 'disstid', outCharset: 'utf-8' },
-   headers:{ referer: 'https://y.qq.com/'}
- }
-
- request(options, function (error, response, body) {
-   if (error) throw new Error(error)
-   var ret = JSON.parse(body.match(/({.*})\)$/)[1])
-   return ret.cdlist[0].songlist
- })*/
 
 apiRoutes.get('/getDiscList', function (req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
@@ -122,34 +75,6 @@ apiRoutes.get('/lyric', function (req, res) {
     res.json(ret)
   }).catch((e) => {
     console.log(e)
-  })
-})
-
-apiRoutes.get('/recommend', function (req, res) {
-  res.json({
-    errno: 0,
-    data: recommend
-  })
-})
-
-apiRoutes.get('/rank', function (req, res) {
-  res.json({
-    errno: 0,
-    data: rank
-  })
-})
-
-apiRoutes.get('/singer', function (req, res) {
-  res.json({
-    errno: 0,
-    data: singer
-  })
-})
-
-apiRoutes.get('/search', function (req, res) {
-  res.json({
-    errno: 0,
-    data: search
   })
 })
 
