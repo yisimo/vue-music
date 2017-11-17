@@ -17,6 +17,7 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+``` bash
 技术栈
 Vue全家桶（构建工具Vue-cli，vue-router路由,vuex状态管理，vue-resource）
 
@@ -29,7 +30,9 @@ Stylus
 Axios
 
 jsonp
+```
 
+``` bash
 项目结构
 |-- build                            // webpack配置文件
 |-- config                           // 项目打包路径
@@ -79,9 +82,7 @@ jsonp
 |       |-- mutation-types.js       
 |       |-- mutations.js       
 |       |-- actions.js       
-|       |-- getters.js      
-|   |-- util                         // 全局公用函数
-|       |-- index.js                 
+|       |-- getters.js                  
 |   |-- App.vue                      // App入口文件
 |   |-- main.js                      // 程序入口文件，加载Vuex,Vue-router等插件
 |-- .babelrc                         // ES6语法编译配置
@@ -92,4 +93,5 @@ jsonp
 |-- .postcssrc.js                    // post css 配置文件
 |-- README.md                        // README
 |-- index.html                       // 入口html文件
-`-- package.json                     // 项目及工具的依赖配置文件
+|-- package.json                     // 项目及工具的依赖配置文件
+```
